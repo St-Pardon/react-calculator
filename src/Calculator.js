@@ -22,31 +22,64 @@ class Calculator extends React.Component{
     });
   }
   handleNumbers(e){
-    if(this.state.defaultValue !== "0"){
+    if(this.state.defaultValue === "0"){
+      console.log("first num" + e.target.value)
       this.setState({
-        currentValue: e.target.value, 
-        defaultValue: this.state.defaultValue +"" + this.state.currentValue
+        // currentValue: e.target.value
+        defaultValue: e.target.value 
+        // defaultValue: this.state.defaultValue === "0"  ? this.state.currentValue : + this.state.currentValue
       });
+      // console.log(this.state.currentValue)
+      console.log(this.state.defaultValue)
     } else {
+      console.log("second num" + e.target.value)
       this.setState({
-        defaultValue: e.target.value
+        // currentValue: e.target.value, 
+        defaultValue: this.state.defaultValue  +  e.target.value
+        // defaultValue: this.state.defaultValue  !== "0"  ? this.state.currentValue : this.state.defaultValue + this.state.currentValue
       })
+      // console.log(this.state.currentValue)
+      console.log(this.state.defaultValue)
 
     }
   }
+  // handleOperators(e){
+  //   if(this.state.defaultValue === "0" && (e.target.value === "-" || e.target.value === "+")){
+  //     console.log(e.target.value)
+  //     this.setState({
+  //       // currentValue: e.target.value,
+  //       defaultValue: e.target.value
+  //     })
+  //   } else if(this.state.defaultValue === "-" || e.target.value === "+"){
+  //     this.setState({
+  //       // currentValue: e.target.value,
+  //       defaultValue: e.target.value
+  //     })
+  //   } else {
+  //     console.log("this is the other " + e.target.value)
+  //     this.setState({
+  //       // currentValue: e.target.value,
+  //       defaultValue: this.state.defaultValue + e.target.value
+  //     })
+  //   } 
+  // }
   handleOperators(e){
-    if(this.state.defaultValue === "0" && (e.target.value === "-" || e.target.value === "+")){
+    if(this.state.defaultValue !== "0"){
       console.log(e.target.value)
       this.setState({
-        // currentValue: e.target.value,
-        defaultValue: e.target.value
+        defaultValue: this.state.defaultValue[this.state.defaultValue.length - 1] === e.target.value ?  this.state.defaultValue : this.state.defaultValue + e.target.value  
       })
-    } else {
+      // this.setState({
+        //   // currentValue: e.target.value,
+        //   defaultValue: e.target.value
+        // })
+      } else if (this.state.defaultValue === "-" || e.target.value === "+"){
+        this.setState({
+          // currentValue: e.target.value,
+          defaultValue: e.target.value
+        })
+      } else {
       console.log("this is the other " + e.target.value)
-      this.setState({
-        currentValue: e.target.value,
-        defaultValue: this.state.defaultValue + "" + this.state.currentValue
-      })
     } 
   }
   
