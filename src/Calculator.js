@@ -3,8 +3,6 @@ import Numpad from "./components/Numpad"
 import Display from "./components/Display"
 
 let result = "";
-console.log(typeof result)
-console.log(result)
 class Calculator extends React.Component{
   constructor(){
     super();
@@ -12,6 +10,7 @@ class Calculator extends React.Component{
       defaultValue: "0",
       currentValue: "0",
       formula: "",
+      // result: result
     };
     this.handleNumbers = this.handleNumbers.bind(this);
     this.handleOperators = this.handleOperators.bind(this);
@@ -20,11 +19,11 @@ class Calculator extends React.Component{
     this.handleDecimal = this.handleDecimal.bind(this);
   }
   handleClear(){
+    result = ""
     this.setState({
       defaultValue: "0",
       currentValue: "0"
     });
-    console.log("h")
   }
   handleNumbers(e){
     if(this.state.defaultValue === "0"){
@@ -36,7 +35,6 @@ class Calculator extends React.Component{
         defaultValue: this.state.defaultValue  +  e.target.value
       })
     }
-    // this.handleEqualsTo()
   }
 
   handleOperators(e){
@@ -46,7 +44,6 @@ class Calculator extends React.Component{
         : (this.state.defaultValue[this.state.defaultValue.length - 1] ===  "+" || this.state.defaultValue[this.state.defaultValue.length - 1] === "-") && (e.target.value ===  "/" || e.target.value ===  "*" )? this.state.defaultValue
         : this.state.defaultValue + e.target.value  
       })
-      // this.handleEqualsTo()
       } else if (e.target.value === "-" || e.target.value === "+"){
         this.setState({
           defaultValue: e.target.value
@@ -60,17 +57,12 @@ class Calculator extends React.Component{
         })
       } 
   }
-  // 3+5*6-2/4=32.5or11.5
   
   handleDecimal(e){
     let ini = /[\+\_\*\/]\d+$/.test(this.state.defaultValue);  // checks +23 
     let regex = /(\d+\.\d+)$/g.test(this.state.defaultValue); // checks 12.34
     let des = /\.$/.test(this.state.defaultValue); // match decimal
     let signs = /[\+\_\*\/]$/.test(this.state.defaultValue) // for maths operator
-    console.log(ini);
-    console.log(regex);
-    console.log(des);
-    console.log(signs);
     if (this.state.defaultValue !== "0"){
       this.setState({
         defaultValue: ini ? this.state.defaultValue + e.target.value

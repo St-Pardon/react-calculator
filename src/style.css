@@ -4,25 +4,38 @@
   box-sizing: border-box;
 }
 .container{
-  /* background-color:; */
-  border: 1px solid red;
   width: 325px;
   margin: 0 auto;
 }
-
+#screen{
+  height: 74px;
+  display: flex;
+  flex-direction: column;
+  text-align: end;
+  background-color: gray;
+}
+#display{
+  font-size: 26px;
+  height: 30px;
+  padding: 0 3px;
+}
+#output{
+  font-size: 36px;
+  height: 44px;
+  padding: 0 5px;
+}
 .inner-container{
   display: flex;
   flex-direction: column;
+  background-color: rgb(97, 110, 110);
 }
 .controls{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  
 }
 .lower{
   display: flex;
-  /* flex-direction: row; */
 }
 .inputs{
   flex-wrap: wrap;
@@ -32,7 +45,7 @@
 .input-button{
   font-size: 26px;
   width: 60px;
-  height: 70px;
+  height: 80px;
   border: none;
   background-color: unset;
 }
@@ -43,7 +56,23 @@
 .operator-button{
   font-size: 26px;
   width: 60px;
-  height: 70px;
+  height: 80px;
   border: none;
   background-color: unset;
+}
+@media screen and (max-width: 600px){
+  .container{
+    width: 100%;
+  }
+  .input-button{
+    width: 70px;
+  }
+  .operators{
+    display: flex;
+    flex-direction: column;
+  }
+  .operator-button{
+
+    width: 70px;
+  }
 }
