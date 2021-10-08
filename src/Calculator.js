@@ -2,6 +2,9 @@ import React from "react";
 import Numpad from "./components/Numpad"
 import Display from "./components/Display"
 
+let result = "";
+console.log(typeof result)
+console.log(result)
 class Calculator extends React.Component{
   constructor(){
     super();
@@ -9,11 +12,10 @@ class Calculator extends React.Component{
       defaultValue: "0",
       currentValue: "0",
       formula: "",
-      result: ""
     };
     this.handleNumbers = this.handleNumbers.bind(this);
     this.handleOperators = this.handleOperators.bind(this);
-    // this.handleEqualsTo = this.handleEqualsTo.bind(this);
+    this.handleEqualsTo = this.handleEqualsTo.bind(this);
     this.handleClear = this.handleClear.bind(this);
     this.handleDecimal = this.handleDecimal.bind(this);
   }
@@ -22,6 +24,7 @@ class Calculator extends React.Component{
       defaultValue: "0",
       currentValue: "0"
     });
+    console.log("h")
   }
   handleNumbers(e){
     if(this.state.defaultValue === "0"){
@@ -33,6 +36,7 @@ class Calculator extends React.Component{
         defaultValue: this.state.defaultValue  +  e.target.value
       })
     }
+    // this.handleEqualsTo()
   }
 
   handleOperators(e){
@@ -42,18 +46,21 @@ class Calculator extends React.Component{
         : (this.state.defaultValue[this.state.defaultValue.length - 1] ===  "+" || this.state.defaultValue[this.state.defaultValue.length - 1] === "-") && (e.target.value ===  "/" || e.target.value ===  "*" )? this.state.defaultValue
         : this.state.defaultValue + e.target.value  
       })
+      // this.handleEqualsTo()
       } else if (e.target.value === "-" || e.target.value === "+"){
         this.setState({
           defaultValue: e.target.value
         })
       } else if (e.target.value === "="){
+        this.handleEqualsTo()
         this.setState({
           defaultValue : this.state.defaultValue[this.state.defaultValue.length - 1] === "=" ? 
           this.state.defaultValue
-          : this.state.defaultValue + e.target.value
+          : this.state.defaultValue + e.target.value + result
         })
       } 
   }
+  // 3+5*6-2/4=32.5or11.5
   
   handleDecimal(e){
     let ini = /[\+\_\*\/]\d+$/.test(this.state.defaultValue);  // checks +23 
@@ -80,13 +87,18 @@ class Calculator extends React.Component{
     }
   }
   handleEqualsTo(){
-    
+    let ans = /(^\W?\d+)(\W+?\d+)+/.test(this.state.defaultValue)
+    let eq = /\=$/.test(this.state.defaultValue)
+    if (ans){
+      result = eval(this.state.defaultValue)
+    }
   }
 
   render(){
     return (
-    <div>
-      <Display val = {this.state.defaultValue}/>
+    <div className="container">
+      <Display val = {this.state.defaultValue} result={result}/>
+
       <Numpad 
         click = {this.handleNumbers} 
         operation = {this.handleOperators} 
