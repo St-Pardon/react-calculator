@@ -24,41 +24,48 @@ class Calculator extends React.Component{
       prevVal: "0",
       result: "0",
       displayInput: "",
-      lastInput: ""
+      lastInput: "",
+      evaluated: false
     });
   }
   handleNumbers(e){
-    if(this.state.displayInput === "0"){
+    if(this.state.displayInput === ""){
+      console.log("zero1")
       this.setState({
-        displayInput: e.target.value 
+        displayInput: e.target.value,
+        result: e.target.value
       });
     } else {
+      console.log("zero2")
       this.setState({
-        displayInput: this.state.displayInput  +  e.target.value
+        displayInput: this.state.displayInput === "0" && e.target.value === "0" ? this.state.displayInput : this.state.displayInput +  e.target.value,
+        result: this.state.displayInput === "0" && e.target.value === "0" ? this.state.displayInput : this.state.result +  e.target.value
       })
     }
   }
 
   handleOperators(e){
+    this.setState({result: e.target.value})
     // if(this.state.displayInput !== "" && e.target.value !== "="){
-      if (!endsWithOperator.test(this.state.displayInput)){
-        console.log("first")
-        console.log(this.state.displayInput)
-        this.setState({
-          prevVal: this.state.displayInput,
-          displayInput: this.state.displayInput + e.target.value
-        });
-      } else if (!/\d[x/+-]{1}-$/.test(this.state.displayInput)){
-        console.log("second")
-        this.setState({
-          displayInput: (/\d[x/+-]{1}-$/.test(this.state.displayInput + e.target.value) ? this.state.displayInput : this.state.prevVal) + e.target.value
-        });        
-      } else if (e.target.value !== "-"){
-        console.log("third")
-        this.setState({
-          displayInput: this.state.prevVal + e.target.value
-        });
-      }
+        if(this.state.evaluated){
+          this.setState({
+            displayInput: this.state.result + e.target.value,
+            result: "0"
+          })
+        } else if (!endsWithOperator.test(this.state.displayInput)){
+          this.setState({
+            prevVal: this.state.displayInput,
+            displayInput: this.state.displayInput + e.target.value
+          });
+        } else if (!/\d[x/+-]{1}-$/.test(this.state.displayInput)){
+          this.setState({
+            displayInput: (/\d[x/+-]{1}-$/.test(this.state.displayInput + e.target.value) ? this.state.displayInput : this.state.prevVal) + e.target.value
+          });        
+        } else if (e.target.value !== "-"){
+          this.setState({
+            displayInput: this.state.prevVal + e.target.value
+          });
+        }
       // this.setState({
       //   displayInput: this.state.displayInput[this.state.displayInput.length - 1] === e.target.value 
       //   ?  this.state.displayInput 
@@ -71,45 +78,55 @@ class Calculator extends React.Component{
       //   this.setState({
       //     displayInput: e.target.value
       //   })
-      // } else if (e.target.value === "="){
+      //  else if (e.target.value === "="){
       //   this.handleEqualsTo()
     
       // } 
   }
   
   handleDecimal(e){
-    let ini = /[\+\_\*\/]\d+$/.test(this.state.displayInput);  // checks +23 
+    let ini = /[\+\-\x\/]\d+$/.test(this.state.displayInput);  // checks +23 
     let regex = /(\d+\.\d+)$/g.test(this.state.displayInput); // checks 12.34
     let des = /\.$/.test(this.state.displayInput); // match decimal
-    let signs = /[\+\_\*\/]$/.test(this.state.displayInput) // for maths operator
+    let signs = /[\+\-\x\/]$/.test(this.state.displayInput) // for maths operator
     if (this.state.displayInput !== ""){
+      console.log("first")
       this.setState({
         displayInput : ini 
         ? this.state.displayInput + e.target.value
-          : regex 
-          ? this.state.displayInput 
+        : regex 
+        ? this.state.displayInput 
             : des 
             ? this.state.displayInput  
               : signs 
               ? this.state.displayInput + "0" + e.target.value
-                : this.state.displayInput + e.target.value
-
+              : this.state.displayInput + e.target.value,
+        result: !endsWithOperator.test(this.state.displayInput) ? this.state.result : "0" + e.target.value
+        
       })
     } else {
+      console.log("second")
       this.setState({
-        displayInput: this.state.displayInput  + e.target.value
+        displayInput: '0'  + e.target.value,
+        result: this.state.result  + e.target.value
+        
       })
     }
   }
   handleEqualsTo(){
-    let ans = /(^\W?\d+)(\W+?\d+)+/.test(this.state.displayInput)
-    let eq = /\=$/.test(this.state.displayInput)
+    let cleanData = this.state.displayInput;
+    cleanData = cleanData.replace(/x/g, '*')
+    let ans = /(^\W?\d+)(\W+?\d+)+/.test(cleanData)
+    // let eq = /\=$/.test(this.state.displayInput)
     if (ans){
+      console.log("result")
       this.setState({
-        result : eval(this.state.displayInput),
-        displayInput : this.state.displayInput[this.state.displayInput.length - 1] === "=" 
-        ? this.state.displayInput
-        : this.state.displayInput + '=' + this.state.result
+        result : eval(cleanData),
+        displayInput : this.state.displayInput + "=" + eval(cleanData),
+        evaluated: true
+        // displayInput : this.state.displayInput[this.state.displayInput.length - 1] === "=" 
+        // ? this.state.displayInput
+        // : this.state.displayInput + '=' + this.state.result
       })
     }
   }
@@ -124,6 +141,7 @@ class Calculator extends React.Component{
         operation = {this.handleOperators} 
         clear = {this.handleClear}
         decimal = {this.handleDecimal}
+        equate = {this.handleEqualsTo}
       />
     </div>
     )

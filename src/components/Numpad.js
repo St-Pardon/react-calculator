@@ -25,7 +25,7 @@ const Numpad = (props) => {
         </div>
         <div className="controls">
           <button id="clear" className="operator-button" onClick={props.clear}>C</button>
-          <button id="equals" className="operator-button" value="=" onClick={props.operation}>=</button>
+          <button id="equals" className="operator-button" value="=" onClick={props.equate}>=</button>
         </div>
       </div>
     </div>
