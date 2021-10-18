@@ -49,8 +49,8 @@ class Calculator extends React.Component{
     // if(this.state.displayInput !== "" && e.target.value !== "="){
         if(this.state.evaluated){
           this.setState({
-            displayInput: this.state.result + e.target.value,
-            result: "0"
+            displayInput: this.state.prevVal + e.target.value,
+            // result: "0"
           })
         } else if (!endsWithOperator.test(this.state.displayInput)){
           this.setState({
@@ -123,6 +123,7 @@ class Calculator extends React.Component{
       this.setState({
         result : eval(cleanData),
         displayInput : this.state.displayInput + "=" + eval(cleanData),
+        prevVal: eval(cleanData),
         evaluated: true
         // displayInput : this.state.displayInput[this.state.displayInput.length - 1] === "=" 
         // ? this.state.displayInput
