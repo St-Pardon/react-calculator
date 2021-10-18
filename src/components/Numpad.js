@@ -19,7 +19,7 @@ const Numpad = (props) => {
         </div>
         <div className="operators">
           <button id="divide" className="operator-button" value="/" onClick={props.operation}>&#xF7;</button>
-          <button id="multiply" className="operator-button" value="*" onClick={props.operation}>x</button>
+          <button id="multiply" className="operator-button" value="x" onClick={props.operation}>x</button>
           <button id="subtract" className="operator-button" value="-" onClick={props.operation}>-</button>
           <button id="add" className="operator-button" value="+" onClick={props.operation}>+</button>
         </div>
